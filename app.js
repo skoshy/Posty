@@ -55,6 +55,21 @@ app.controller('PostsCtrl', [
     '$scope', '$stateParams', 'posts',
     function ($scope, $stateParams, posts) {
         $scope.post = posts.posts[$stateParams.id];
+        
+        $scope.addComment = function() {
+            // Don't allow a new comment if body is empty
+            if ($scope.body === '') return;
+            
+            // add the comment
+            $scope.post.comments.push({
+                body: $scope.body,
+                author: 'user',
+                upvotes: 0,
+            });
+            
+            // reset the form
+            $scope.body = '';
+        };
     }
 ]);
 
