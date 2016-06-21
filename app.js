@@ -1,13 +1,22 @@
-var app = angular.module('posty', []);
+var app = angular.module('posty', ['ui.router']);
+
+app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    $stateProvider
+        .state('home', {
+            url: '/home',
+            templateUrl: '/home.html',
+            controller: 'MainCtrl',
+        });
+    
+    $urlRouterProvider.otherwise('home');
+}]);
+
 
 app.controller('MainCtrl', [
-    '$scope',
-    function ($scope) {
+    '$scope', 'posts',
+    function ($scope, posts) {
         $scope.test = 'Hello World!';
-        $scope.posts = [
-            {title: 'post 1', upvotes: 5},
-            {title: 'post 2', upvotes: 2},
-        ];
+        $scope.posts = posts.posts;
         $scope.addPost = function() {
             if (!$scope.title || $scope.title === '') return;
             
@@ -21,3 +30,10 @@ app.controller('MainCtrl', [
         };
     }
 ]);
+
+app.factory('posts', [function() {
+    var o = {
+        posts: []
+    };
+    return o;
+}]);
